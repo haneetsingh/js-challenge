@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Drum Kicks</title>
+  <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+  <div class="keys">
+    <div data-key="65" class="key">
+      <kbd>a</kbd>
+      <div class="sound">Clap</div>
+    </div>
+    <div data-key="72" class="key">
+      <kbd>h</kbd>
+      <div class="sound">Boom</div>
+    </div>
+  </div>
+
+  <audio data-key="65" src="sounds/clap.wav"></audio>
+  <audio data-key="72" src="sounds/boom.wav"></audio>
+
+  <script>
+    function playSound(e) {
+      const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
+      const key = document.querySelector(`.key[data-key="${e.keyCode}"]`);
+      if (!audio) return;
+      audio.currentTime = 0;
+      audio.play();
+      key.classList.add('playing');
+    }
+
+    function removeTransition(e) {
+      if (e.propertyName !== 'transform') return;
+      this.classList.remove('playing');
+    }
+
+    const keys = document.querySelectorAll('.key');
+    keys.forEach((key) => key.addEventListener('transitionend', removeTransition));
+
+    window.addEventListener('keydown', playSound);
+  </script>
+</body>
+</html>
